@@ -2,15 +2,12 @@ module TunesTools
   class InvalidCollectionError < StandardError; end;
 
   class Collection
-    def directory
-      @directory ||= Dir.new(path)
-      raise InvalidCollectionError if not File.directory?(@directory.path)
+    attr_reader :path
 
-      @directory
+    def initialize(path)
+      @path = path
+      raise InvalidCollectionError if not File.directory? @path
     end
 
-    def path
-      '/media/DATA__/Music/sync'
-    end
   end
 end
