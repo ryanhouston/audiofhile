@@ -9,5 +9,8 @@ module TunesTools
       raise InvalidCollectionError if not File.directory? @path
     end
 
+    def file_types
+    end
   end
+
 end
