@@ -1,4 +1,4 @@
-module TunesTools
+module Audiofhile
   class InvalidCollectionError < StandardError; end;
 
   class Collection

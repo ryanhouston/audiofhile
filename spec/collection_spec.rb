@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'collection'
 
-module TunesTools
+module Audiofhile
   describe Collection do
 
     context "with a valid path" do
