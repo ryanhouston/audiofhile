@@ -6,7 +6,7 @@ module TunesTools
 
     def initialize(path)
       @path = path
-      raise InvalidCollectionError if not File.directory? @path
+      raise InvalidCollectionError unless File.directory? @path
     end
 
     def file_types
