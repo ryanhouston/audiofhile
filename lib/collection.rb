@@ -9,7 +9,14 @@ module Audiofhile
       raise InvalidCollectionError unless File.directory? @path
     end
 
-    def file_types
+    def formats
+      formats = []
+      audio_files.each do |file|
+        ext = File.extname(file)
+        formats << ext unless formats.include?(ext)
+      end
+
+      formats
     end
 
     def audio_files

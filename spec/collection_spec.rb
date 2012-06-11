@@ -12,17 +12,13 @@ module Audiofhile
       its(:path) { should eq @path }
 
       it "produces a list of audio file types in the collection" do
-        should respond_to :file_types
+        should respond_to :formats
       end
 
       its(:audio_files) do
         should_not be_nil
       end
 
-      it "should have music files" do
-        collection = Collection.new('/home/rhouston/Music')
-        puts collection.audio_files.join("\n")
-      end
     end
 
     context "with an invalid path" do
