@@ -15,6 +15,14 @@ module Audiofhile
         should respond_to :file_types
       end
 
+      its(:audio_files) do
+        should_not be_nil
+      end
+
+      it "should have music files" do
+        collection = Collection.new('/home/rhouston/Music')
+        puts collection.audio_files.join("\n")
+      end
     end
 
     context "with an invalid path" do

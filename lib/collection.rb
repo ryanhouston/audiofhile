@@ -11,6 +11,11 @@ module Audiofhile
 
     def file_types
     end
+
+    def audio_files
+      finder = FileFinder.new(@path)
+      finder.audio_files
+    end
   end
 
 end
