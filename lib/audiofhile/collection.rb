@@ -10,13 +10,7 @@ module Audiofhile
     end
 
     def formats
-      formats = []
-      audio_files.each do |file|
-        ext = File.extname(file)
-        formats << ext unless formats.include?(ext)
-      end
-
-      formats
+      audio_files.collect { |file| File.extname(file) }.uniq
     end
 
     def audio_files
