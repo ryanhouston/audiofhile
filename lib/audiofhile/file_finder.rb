@@ -1,5 +1,7 @@
 module Audiofhile
   class FileFinder
+    AUDIO_FORMATS = %w(mp3 m4a m4p mpa aif mid wav wma flac ogg).freeze
+
     def initialize (base_path)
       @base_path = base_path
     end
@@ -10,7 +12,7 @@ module Audiofhile
     end
 
     def audio_extensions
-      ['mp3', 'm4a', 'm4p', 'mpa', 'aif', 'mid', 'wav', 'wma', 'flac', 'ogg']
+      AUDIO_FORMATS
     end
   end
 end
