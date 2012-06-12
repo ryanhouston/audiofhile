@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'collection'
+require 'audiofhile/collection'
 
 module Audiofhile
   describe Collection do

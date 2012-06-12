@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'file_finder'
+require 'audiofhile/file_finder'
 
 module Audiofhile
   describe FileFinder do
