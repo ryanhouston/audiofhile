@@ -11,8 +11,13 @@ module Audiofhile
     end
 
     desc "files", "List all files in the audio collection"
+    method_option "ext", :type => :string, :banner => "Only show files of the specified extension"
     def files
-      puts @collection.audio_files
+      if options[:ext]
+        puts @collection.audio_files_of_format(options[:ext])
+      else
+        puts @collection.audio_files
+      end
     end
 
     desc "formats", "List all audio file formats in the audio collection"
