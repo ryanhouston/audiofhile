@@ -9,21 +9,27 @@ module Audiofhile
       @base_path = base_path
     end
 
-    def audio_files (extension = nil)
-      file_pattern   = extension.nil? ? MATCH_ALL_FORMATS : file_pattern_match(extension)
-      search_pattern = File.join(@base_path, "**", file_pattern)
+    def audio_files (extension = :all)
+      search_pattern = File.join(@base_path, "**", file_pattern(extension))
       files = Dir.glob search_pattern
     end
 
-    def file_pattern_match (extension)
-      extension.gsub!('.', '')
+    def file_pattern (extension = :all)
+      extension == :all ? MATCH_ALL_FORMATS : file_pattern_match(extension)
+    end
 
-      unless AUDIO_FORMATS.include? extension
-        raise InvalidAudioFormatError, extension + " is not known audio format"
+    def file_pattern_match (extension)
+      unless is_valid_extension extension
+       raise InvalidAudioFormatError, extension + " is not known audio format"
       end
 
-      "*." + extension
+      "*." + extension.to_s
     end
+
+    def is_valid_extension (extension)
+      AUDIO_FORMATS.include? extension.to_s
+    end
+
   end
 end
 

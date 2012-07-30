@@ -14,7 +14,7 @@ module Audiofhile
     method_option "ext", :type => :string, :banner => "Only show files of the specified extension"
     def files
       if options[:ext]
-        puts @collection.audio_files_of_format(options[:ext])
+        puts @collection.audio_files_of_format(options[:ext].to_sym)
       else
         puts @collection.audio_files
       end
