@@ -20,7 +20,7 @@ module Audiofhile
 
     def file_pattern_match (extension)
       unless is_valid_extension extension
-       raise InvalidAudioFormatError, extension + " is not known audio format"
+       raise InvalidAudioFormatError, extension.to_s + " is not known audio format"
       end
 
       "*." + extension.to_s
