@@ -3,27 +3,53 @@ require "yaml"
 
 module Audiofhile
   class CLI < Thor
-    CONFIG_FILE = File.join(File.dirname(__FILE__), '..', '..', '.audiofhile').freeze
-
-    class_option "path", :type => "string", :required => true, :banner => "The path to the audio collection"
+    class_option "path", :type => "string", :required => false, :banner => "The path to the audio collection"
 
     def initialize(*)
       super
-      @collection = Collection.new(options['path'])
+
     end
 
+    private
+      def load_path
+        if options['path']
+          return options['path']
+        end
+
+        config.collection_path
+      end
+
+      def config
+        @config ||= Configuration.new
+      end
+
+      def collection
+        @collection ||= Collection.new(collection_path)
+      end
+
+      def collection_path
+        @path ||= load_path || options['path']
+        unless @path
+          raise RuntimeError, "Must supply --path option or set path using 'path' command"
+        end
+
+        @path
+      end
+
+    public
     desc "path [DIR]", "Show or set the path to be used in future operations"
     def path(dir = nil)
       if dir
-        options = {"audiofhile" => {"collection" => {"path" => dir } } }
-        File.open(CONFIG_FILE, 'w+') {|f| f.write(options.to_yaml) }
+        config.write do |c|
+          c.collection_path = dir
+        end
+
       else
-        unless File.exists? CONFIG_FILE
+        unless File.exists? Configuration.config_file
           raise RuntimeError, "No collection path has been set"
         end
 
-        config = YAML::load(CONFIG_FILE)
-        puts config['audiofhile']['collection']['path']
+        puts config.collection_path
       end
     end
 
@@ -31,9 +57,9 @@ module Audiofhile
     method_option "ext", :type => :string, :banner => "Only show files of the specified extension"
     def files
       if options[:ext]
-        puts @collection.audio_files_of_format(options[:ext].to_sym)
+        puts collection.audio_files_of_format(options[:ext].to_sym)
       else
-        puts @collection.audio_files
+        puts collection.audio_files
       end
     end
 
