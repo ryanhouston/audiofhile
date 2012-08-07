@@ -5,6 +5,11 @@ module Audiofhile
   class CLI < Thor
     class_option "path", :type => "string", :required => false, :banner => "The path to the audio collection"
 
+    def initialize(*)
+      super
+      load_path
+    end
+
     desc "path [DIR]", "Show or set the path to be used in future operations"
     def path(dir = nil)
       if dir
