@@ -5,45 +5,12 @@ module Audiofhile
   class CLI < Thor
     class_option "path", :type => "string", :required => false, :banner => "The path to the audio collection"
 
-    def initialize(*)
-      super
-
-    end
-
-    private
-      def load_path
-        if options['path']
-          return options['path']
-        end
-
-        config.collection_path
-      end
-
-      def config
-        @config ||= Configuration.new
-      end
-
-      def collection
-        @collection ||= Collection.new(collection_path)
-      end
-
-      def collection_path
-        @path ||= load_path || options['path']
-        unless @path
-          raise RuntimeError, "Must supply --path option or set path using 'path' command"
-        end
-
-        @path
-      end
-
-    public
     desc "path [DIR]", "Show or set the path to be used in future operations"
     def path(dir = nil)
       if dir
         config.write do |c|
           c.collection_path = dir
         end
-
       else
         unless File.exists? Configuration.config_file
           raise RuntimeError, "No collection path has been set"
@@ -67,6 +34,27 @@ module Audiofhile
     def formats
       puts @collection.formats
     end
+
+    private
+      def load_path
+        @path ||= options['path'] || config.collection_path
+      end
+
+      def config
+        @config ||= Configuration.new
+      end
+
+      def collection
+        @collection ||= Collection.new(collection_path)
+      end
+
+      def collection_path
+        unless @path
+          raise RuntimeError, "Must supply --path option or set path using 'path' command"
+        end
+
+        @path
+      end
 
   end
 end
