@@ -37,7 +37,7 @@ module Audiofhile
 
     desc "formats", "List all audio file formats in the audio collection"
     def formats
-      puts @collection.formats
+      puts collection.formats
     end
 
     private
