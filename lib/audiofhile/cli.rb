@@ -3,12 +3,14 @@ require "yaml"
 
 module Audiofhile
   class CLI < Thor
-    class_option "path", :type => "string", :required => false, :banner => "The path to the audio collection"
 
     def initialize(*)
       super
       load_path
     end
+
+    class_option "path", :type => "string", :required => false,
+      :banner => "The path to the audio collection"
 
     desc "path [DIR]", "Show or set the path to be used in future operations"
     def path(dir = nil)
@@ -20,10 +22,11 @@ module Audiofhile
     end
 
     desc "files", "List all files in the audio collection"
-    method_option "ext", :type => :string, :banner => "Only show files of the specified extension"
+    method_option "ext", :type => :string,
+      :banner => "Only show files of the specified extension"
     def files
       if options[:ext]
-        puts collection.audio_files_of_format(options[:ext].to_sym)
+        puts collection.audio_files_by_format(options[:ext].to_sym)
       else
         puts collection.audio_files
       end

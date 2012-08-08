@@ -18,7 +18,7 @@ module Audiofhile
       finder.audio_files
     end
 
-    def audio_files_of_format(extension)
+    def audio_files_by_format(extension)
       finder = FileFinder.new(@path)
       finder.audio_files(extension)
     end
