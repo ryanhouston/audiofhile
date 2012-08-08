@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'audiofhile/configuration'
-require 'fileutils'
 
 module Audiofhile
   describe Configuration do
