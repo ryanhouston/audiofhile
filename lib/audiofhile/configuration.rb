@@ -1,6 +1,6 @@
 module Audiofhile
   class Configuration
-    CONFIG_FILE = File.join(File.dirname(__FILE__), '..', '..', '.audiofhile').freeze
+    CONFIG_FILE = File.join(Dir.home, '.audiofhile').freeze
 
     def initialize
       load_config

@@ -13,15 +13,9 @@ module Audiofhile
     desc "path [DIR]", "Show or set the path to be used in future operations"
     def path(dir = nil)
       if dir
-        config.write do |c|
-          c.collection_path = dir
-        end
+        config.write {|c| c.collection_path = dir }
       else
-        unless File.exists? Configuration.config_file
-          raise RuntimeError, "No collection path has been set"
-        end
-
-        puts config.collection_path
+        puts config.collection_path || "No path has been set."
       end
     end
 
