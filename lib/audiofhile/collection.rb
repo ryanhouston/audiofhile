@@ -4,6 +4,7 @@ module Audiofhile
   class InvalidCollectionError < StandardError; end;
 
   class Collection
+    include Helpers
     attr_reader :path
 
     def initialize(path)
@@ -21,14 +22,15 @@ module Audiofhile
     end
 
     def artists
-      orig_stderr = STDERR.dup
-      $stderr.reopen('/dev/null', 'w')
-      artist_list = audio_files.collect do |file|
-        TagLib::FileRef.open(file) do |fileref|
-          fileref.tag.artist
+      artist_list = []
+
+      mute_stderr do
+        artist_list = audio_files.collect do |file|
+          TagLib::FileRef.open(file) do |fileref|
+            fileref.tag.artist
+          end
         end
       end
-      $stderr.reopen(orig_stderr)
 
       artist_list.uniq
     end
