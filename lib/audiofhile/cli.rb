@@ -16,11 +16,8 @@ module Audiofhile
     method_option "ext", :type => :string,
       :banner => "Only show files of the specified extension"
     def files
-      if options[:ext]
-        puts collection.audio_files_by_format(options[:ext].to_sym)
-      else
-        puts collection.audio_files
-      end
+      ext = options[:ext] ? options[:ext].to_sym : :all
+      puts collection.audio_files(ext)
     end
 
     desc "formats", "List all audio file formats in the audio collection"
@@ -35,6 +32,11 @@ module Audiofhile
       else
         puts config.collection_path || "No path has been set."
       end
+    end
+
+    desc "artists", "List the artists contained in the collection"
+    def artists
+      puts collection.artists
     end
 
     private

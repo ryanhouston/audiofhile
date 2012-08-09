@@ -1,3 +1,5 @@
+require 'taglib'
+
 module Audiofhile
   class InvalidCollectionError < StandardError; end;
 
@@ -13,14 +15,19 @@ module Audiofhile
       audio_files.collect { |file| File.extname(file) }.uniq
     end
 
-    def audio_files
-      finder = FileFinder.new(@path)
-      finder.audio_files
-    end
-
-    def audio_files_by_format(extension)
+    def audio_files(extension = :all)
       finder = FileFinder.new(@path)
       finder.audio_files(extension)
+    end
+
+    def artists
+      artist_list = audio_files.collect do |file|
+        TagLib::FileRef.open(file) do |fileref|
+          fileref.tag.artist
+        end
+      end
+
+      artist_list.uniq
     end
   end
 
