@@ -19,6 +19,13 @@ module Audiofhile
         should_not be_nil
       end
 
+      it "should return a unique list of artists in the collection" do
+        subject.stub(:extract_artists) do
+          ['Zion Lion', 'My Morning Jacket', nil, 'Dr. Dog', 'Frank Zappa', 'Dr. Dog']
+        end
+        expected = ['Dr. Dog', 'Frank Zappa', 'My Morning Jacket', 'Zion Lion']
+        subject.artists.should eq expected
+      end
     end
 
     context "with an invalid path" do
