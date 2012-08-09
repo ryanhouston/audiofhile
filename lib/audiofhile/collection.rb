@@ -21,13 +21,14 @@ module Audiofhile
     end
 
     def artists
+      orig_stderr = STDERR.dup
       $stderr.reopen('/dev/null', 'w')
       artist_list = audio_files.collect do |file|
         TagLib::FileRef.open(file) do |fileref|
           fileref.tag.artist
         end
       end
-      $stderr = STDERR
+      $stderr.reopen(orig_stderr)
 
       artist_list.uniq
     end
