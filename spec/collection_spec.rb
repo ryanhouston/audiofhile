@@ -24,6 +24,7 @@ module Audiofhile
           ['Zion Lion', 'My Morning Jacket', nil, 'Dr. Dog', 'Frank Zappa', 'Dr. Dog']
         end
         expected = ['Dr. Dog', 'Frank Zappa', 'My Morning Jacket', 'Zion Lion']
+        subject.should_receive(:extract_artists)
         subject.artists.should eq expected
       end
     end
