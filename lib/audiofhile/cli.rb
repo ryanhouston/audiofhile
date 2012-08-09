@@ -12,15 +12,6 @@ module Audiofhile
     class_option "path", :type => "string", :required => false,
       :banner => "The path to the audio collection"
 
-    desc "path [DIR]", "Show or set the path to be used in future operations"
-    def path(dir = nil)
-      if dir
-        config.write {|c| c.collection_path = dir }
-      else
-        puts config.collection_path || "No path has been set."
-      end
-    end
-
     desc "files", "List all files in the audio collection"
     method_option "ext", :type => :string,
       :banner => "Only show files of the specified extension"
@@ -35,6 +26,15 @@ module Audiofhile
     desc "formats", "List all audio file formats in the audio collection"
     def formats
       puts collection.formats
+    end
+
+    desc "path [DIR]", "Show or set the path to be used in future operations"
+    def path(dir = nil)
+      if dir
+        config.write {|c| c.collection_path = dir }
+      else
+        puts config.collection_path || "No path has been set."
+      end
     end
 
     private
