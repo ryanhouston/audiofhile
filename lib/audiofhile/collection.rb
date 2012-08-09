@@ -22,13 +22,15 @@ module Audiofhile
     end
 
     def artists
+      extract_artists.uniq.compact!.sort
+    end
+
+    def extract_artists
       artist_list = mute_stderr do
         audio_files.collect do |file|
           TagLib::FileRef.open(file) { |fileref| fileref.tag.artist }
         end
       end
-
-      artist_list.uniq.compact!.sort
     end
   end
 
