@@ -1,3 +1,4 @@
+require 'audiofhile/helpers'
 require 'taglib'
 
 module Audiofhile
