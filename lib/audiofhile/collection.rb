@@ -18,8 +18,11 @@ module Audiofhile
     end
 
     def audio_files(extension = :all)
-      finder = FileFinder.new(@path)
       finder.audio_files(extension)
+    end
+
+    def finder
+      @finder ||= FileFinder.new(@path)
     end
 
     def artists
@@ -33,6 +36,7 @@ module Audiofhile
         end
       end
     end
-  end
 
+  end
 end
+
