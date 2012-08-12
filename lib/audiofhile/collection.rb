@@ -23,7 +23,7 @@ module Audiofhile
     end
 
     def artists
-      extract_artists.uniq.compact!.sort
+      extract_artists.uniq.compact.sort
     end
 
     def extract_artists
