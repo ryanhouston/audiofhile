@@ -1,3 +1,5 @@
+require 'find'
+
 module Audiofhile
   class InvalidAudioFormatError < StandardError; end;
 
@@ -28,6 +30,19 @@ module Audiofhile
 
     def is_valid_extension (extension)
       AUDIO_FORMATS.include? extension.to_s
+    end
+
+    def directories_without_audio_files
+      directories = []
+      Find.find(@base_path) do |path|
+        if FileTest.directory?(path)
+          directories << path unless directories.include? path
+        elsif is_valid_extension(File.extname(path))
+          directories.delete(File.dirname(path))
+        end
+      end
+
+      directories
     end
 
   end

@@ -37,6 +37,10 @@ module Audiofhile
       end
     end
 
+    def crufty_dirs
+      finder.directories_without_audio_files
+    end
+
   end
 end
 

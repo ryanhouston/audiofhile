@@ -12,6 +12,12 @@ module Audiofhile
     class_option "path", :type => "string", :required => false,
       :banner => "The path to the audio collection"
 
+
+    desc "cruft", "Lists the cruft in the collection"
+    def cruft
+      puts collection.crufty_dirs
+    end
+
     desc "files", "List all files in the audio collection"
     method_option "ext", :type => :string,
       :banner => "Only show files of the specified extension"

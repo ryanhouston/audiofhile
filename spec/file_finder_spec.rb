@@ -22,6 +22,10 @@ module Audiofhile
       expect { subject.is_valid_extension(:nope).should be_false }
     end
 
+    it "should provide a list of directories NOT containing any audio files" do
+      subject.directories_without_audio_files
+    end
+
   end
 end
 

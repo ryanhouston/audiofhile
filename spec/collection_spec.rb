@@ -23,10 +23,16 @@ module Audiofhile
         subject.stub(:extract_artists) do
           ['Zion Lion', 'My Morning Jacket', nil, 'Dr. Dog', 'Frank Zappa', 'Dr. Dog']
         end
+
         expected = ['Dr. Dog', 'Frank Zappa', 'My Morning Jacket', 'Zion Lion']
         subject.should_receive(:extract_artists)
         subject.artists.should eq expected
       end
+
+      it "can produce a list of 'crufty' directories in the collection" do
+        subject.crufty_dirs.should_not be_nil
+      end
+
     end
 
     context "with an invalid path" do
