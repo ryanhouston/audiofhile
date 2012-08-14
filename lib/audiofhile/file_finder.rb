@@ -36,9 +36,13 @@ module Audiofhile
       directories = []
       Find.find(@base_path) do |path|
         if FileTest.directory?(path)
-          directories << path unless directories.include? path
-        elsif is_valid_extension(File.extname(path))
-          directories.delete(File.dirname(path))
+          directories << path unless Dir.glob(File.join(path, MATCH_ALL_FORMATS))
+        else
+          ext = File.extname(path)
+          ext.slice!(0)
+          unless is_valid_extension(ext)
+            directories << path
+          end
         end
       end
 
