@@ -1,5 +1,3 @@
-require 'find'
-
 module Audiofhile
   class InvalidAudioFormatError < StandardError; end;
 
