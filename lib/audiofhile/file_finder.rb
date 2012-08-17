@@ -10,16 +10,18 @@ module Audiofhile
     end
 
     def audio_files (extension = :all)
-      audio_files_in_dir @bath_path, extension
+      audio_files_in_dir(@base_path, extension)
     end
 
     def audio_files_in_dir (dir, extension = :all)
+      raise ArgumentError, "Must supply a directory to search" if dir.nil?
+
       search_pattern = File.join(dir, "**", file_pattern(extension))
-      Dir.glob search_pattern
+      files = Dir.glob search_pattern
     end
 
     def file_pattern (extension = :all)
-      extension == :all ? MATCH_ALL_FORMATS : file_pattern_match(extension)
+      (extension == :all) ? MATCH_ALL_FORMATS : file_pattern_match(extension)
     end
 
     def file_pattern_match (extension)
@@ -36,7 +38,6 @@ module Audiofhile
 
     def directories_without_audio_files
       all_directories.reject do |dir|
-puts dir
         audio_files_in_dir(dir).count > 0
       end
     end
@@ -47,7 +48,9 @@ puts dir
 
     def non_audio_files
       directories_without_audio_files.collect do |dir|
-        Dir.glob(File.join(dir, '**/*'))
+        files = Dir.glob(File.join(dir, '**/*')).reject do |entry|
+          FileTest.directory? (entry)
+        end
       end
     end
 

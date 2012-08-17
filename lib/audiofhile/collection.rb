@@ -38,8 +38,7 @@ module Audiofhile
     end
 
     def find_cruft
-      #cruft = { :directories => crufty_dirs, :files => crufty_files }
-      cruft = { :directories => crufty_dirs }
+      cruft = { :directories => crufty_dirs, :files => crufty_files }
     end
 
     def crufty_dirs
