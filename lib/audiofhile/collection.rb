@@ -37,8 +37,17 @@ module Audiofhile
       end
     end
 
+    def find_cruft
+      #cruft = { :directories => crufty_dirs, :files => crufty_files }
+      cruft = { :directories => crufty_dirs }
+    end
+
     def crufty_dirs
       finder.directories_without_audio_files
+    end
+
+    def crufty_files
+      finder.non_audio_files
     end
 
   end

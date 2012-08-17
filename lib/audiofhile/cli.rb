@@ -15,7 +15,10 @@ module Audiofhile
 
     desc "cruft", "Lists the cruft in the collection"
     def cruft
-      puts collection.crufty_dirs
+      cruft = collection.find_cruft
+
+      puts "Directories\n------------\n#{cruft{:directories}}\n"
+      #puts "Files:\n------------\n#{cruft{:files}}\n"
     end
 
     desc "files", "List all files in the audio collection"

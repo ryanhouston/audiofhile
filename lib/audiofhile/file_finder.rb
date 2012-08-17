@@ -12,8 +12,12 @@ module Audiofhile
     end
 
     def audio_files (extension = :all)
-      search_pattern = File.join(@base_path, "**", file_pattern(extension))
-      files = Dir.glob search_pattern
+      audio_files_in_dir @bath_path, extension
+    end
+
+    def audio_files_in_dir (dir, extension = :all)
+      search_pattern = File.join(dir, "**", file_pattern(extension))
+      Dir.glob search_pattern
     end
 
     def file_pattern (extension = :all)
@@ -33,29 +37,20 @@ module Audiofhile
     end
 
     def directories_without_audio_files
-      directories = Dir.glob(File.join(@base_path, '**/'))
-
-      directories_without_music = directories.reject do |dir|
-        Dir.glob(File.join(dir, '**', MATCH_ALL_FORMATS)).count != 0
+      all_directories.reject do |dir|
+puts dir
+        audio_files_in_dir(dir).count > 0
       end
+    end
 
-      directories_without_music
+    def all_directories
+      Dir.glob(File.join(@base_path, '**/'))
     end
 
     def non_audio_files
-      Find.find(@base_path) do |path|
-        if FileTest.directory?(path)
-          directories << path unless Dir.glob(File.join(path, MATCH_ALL_FORMATS))
-        else
-          ext = File.extname(path)
-          ext.slice!(0)
-          unless is_valid_extension(ext)
-            directories << path
-          end
-        end
+      directories_without_audio_files.collect do |dir|
+        Dir.glob(File.join(dir, '**/*'))
       end
-
-      directories
     end
 
   end
