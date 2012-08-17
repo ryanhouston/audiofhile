@@ -33,7 +33,16 @@ module Audiofhile
     end
 
     def directories_without_audio_files
-      directories = []
+      directories = Dir.glob(File.join(@base_path, '**/'))
+
+      directories_without_music = directories.reject do |dir|
+        Dir.glob(File.join(dir, '**', MATCH_ALL_FORMATS)).count != 0
+      end
+
+      directories_without_music
+    end
+
+    def non_audio_files
       Find.find(@base_path) do |path|
         if FileTest.directory?(path)
           directories << path unless Dir.glob(File.join(path, MATCH_ALL_FORMATS))
