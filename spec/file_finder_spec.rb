@@ -25,6 +25,27 @@ module Audiofhile
     it "should provide a list of directories NOT containing any audio files" do
       subject.directories_without_audio_files.should_not be_nil
     end
+
+    it "should provide a list of non-audio type files in the collection" do
+      subject.stub(:all_files) { all_files_list }
+      FileTest.stub(:directory?) { |file| mock_files[file][:is_directory] }
+      File.stub(:extname) { |file| mock_files[file][:extname] }
+
+      subject.non_audio_files.should == ['/music/a/aa/aa.jpg']
+    end
+
+    def all_files_list
+      mock_files.keys
+    end
+
+    def mock_files
+      @mock_fs ||= {
+        '/music/a'             => { :is_directory => true, :extname => nil },
+        '/music/a/aa'          => { :is_directory => true, :extname => nil },
+        '/music/a/aa/01 a.mp3' => { :is_directory => false, :extname => '.mp3' },
+        '/music/a/aa/aa.jpg'   => { :is_directory => false, :extname => '.jpg' },
+      }
+    end
   end
 end
 
