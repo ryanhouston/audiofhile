@@ -33,7 +33,7 @@ module Audiofhile
     end
 
     def is_valid_extension (extension)
-      AUDIO_FORMATS.include? extension.to_s
+      AUDIO_FORMATS.include? extension.to_s.gsub(/^\./, '')
     end
 
     def directories_without_audio_files
@@ -46,11 +46,13 @@ module Audiofhile
       Dir.glob(File.join(@base_path, '**/'))
     end
 
+    def all_files
+      Dir.glob(File.join(@base_path, '**/*'))
+    end
+
     def non_audio_files
-      directories_without_audio_files.collect do |dir|
-        files = Dir.glob(File.join(dir, '**/*')).reject do |entry|
-          FileTest.directory? (entry)
-        end
+      all_files.reject do |file|
+        FileTest.directory?(file) || is_valid_extension(File.extname(file))
       end
     end
 

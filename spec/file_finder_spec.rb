@@ -23,9 +23,8 @@ module Audiofhile
     end
 
     it "should provide a list of directories NOT containing any audio files" do
-      subject.directories_without_audio_files
+      subject.directories_without_audio_files.should_not be_nil
     end
-
   end
 end
 
