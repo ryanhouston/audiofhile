@@ -13,15 +13,25 @@ module Audiofhile
       :banner => "The path to the audio collection"
 
 
-    desc "cruft", "Lists the cruft in the collection"
+    desc "cruft", "Lists non-audio files and directories in the collection"
+    method_option "files", :type => :boolean,
+      :banner => "Only show non-audio type files"
+    method_option "directories", :type => :boolean,
+      :banner => "Only show directories not containing audio files"
     def cruft
+      show_both = options[:directories].nil? && options[:files].nil?
       cruft = collection.find_cruft
 
-      puts "Directories\n------------\n"
-      puts cruft[:directories]
-      puts "\n"
-      puts "Files:\n------------\n"
-      puts cruft[:files]
+      if (options[:directories] || show_both)
+        puts "Directories\n------------\n"
+        puts cruft[:directories]
+        puts "\n"
+      end
+
+      if (options[:files] || show_both)
+        puts "Files:\n------------\n"
+        puts cruft[:files]
+      end
     end
 
     desc "files", "List all files in the audio collection"
