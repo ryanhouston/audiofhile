@@ -1,8 +1,11 @@
 require 'spec_helper'
 require 'audiofhile/file_finder'
+require 'fakefs/spec_helpers'
 
 module Audiofhile
   describe FileFinder do
+    include FakeFS::SpecHelpers
+
     subject { FileFinder.new(File.expand_path('../', __FILE__)) }
 
     its(:audio_files) { should be_a(Array) }
@@ -24,14 +27,27 @@ module Audiofhile
 
     context "provided a collection of directories containing mixed file types" do
       before(:each) do
-        subject.stub(:all_files) { all_mock_files }
-        subject.stub(:all_directories) { all_mock_directories }
-        FileTest.stub(:directory?) { |file| mock_files[file][:is_directory] }
-        File.stub(:extname) { |file| mock_files[file][:extname] }
+        FakeFS.activate!
+        prepare_test_collection
+      end
+
+      after(:each) do
+        FakeFS.deactivate!
+      end
+
+      subject { FileFinder.new('/music') }
+
+      def prepare_test_collection
+        FileUtils.mkdir_p('/music/no_audio')
+        FileUtils.mkdir_p('/music/a/aa')
+        FileUtils.touch([
+          '/music/a/aa/01 a.mp3',
+          '/music/a/aa/aa.jpg',
+          '/music/no_audio/nope.db'
+        ])
       end
 
       it "should provide a list of directories NOT containing any audio files" do
-        subject.stub(:audio_files_in_dir) { |dir| mock_files[dir][:audio_files] }
         subject.directories_without_audio_files.should == ['/music/no_audio']
       end
 
@@ -40,26 +56,6 @@ module Audiofhile
       end
     end
 
-    def all_mock_files
-      mock_files.keys
-    end
-
-    def all_mock_directories
-      mock_files.select { |file| mock_files[file][:is_directory] }.keys
-    end
-
-    def mock_files
-      @mock_fs ||= {
-        '/music/a'             => { :is_directory => true,  :extname => nil,
-                                    :audio_files => ['/music/a/aa/01 a.mp3'] },
-        '/music/a/aa'          => { :is_directory => true,  :extname => nil,
-                                    :audio_files => ['/music/a/aa/01 a.mp3'] },
-        '/music/a/aa/01 a.mp3' => { :is_directory => false, :extname => '.mp3' },
-        '/music/a/aa/aa.jpg'   => { :is_directory => false, :extname => '.jpg' },
-        '/music/no_audio'      => { :is_directory => true,  :extname => nil, :audio_files => [] },
-        '/music/no_audio/nope.db' => { :is_directory => false, :extname => '.db' },
-      }
-    end
   end
 end
 
