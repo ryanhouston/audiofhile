@@ -43,6 +43,7 @@ module Audiofhile
         FileUtils.touch([
           '/music/a/aa/01 a.mp3',
           '/music/a/aa/aa.jpg',
+          '/music/a/not_audio_in_artist_dir.ini',
           '/music/no_audio/nope.db'
         ])
       end
@@ -52,7 +53,11 @@ module Audiofhile
       end
 
       it "should provide a list of non-audio type files in the collection" do
-        subject.non_audio_files.should == ['/music/a/aa/aa.jpg', '/music/no_audio/nope.db']
+        subject.non_audio_files.should == [
+          '/music/a/aa/aa.jpg',
+          '/music/a/not_audio_in_artist_dir.ini',
+          '/music/no_audio/nope.db',
+        ]
       end
     end
 
