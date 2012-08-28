@@ -38,11 +38,14 @@ module Audiofhile
       def prepare_test_collection
         FileUtils.mkdir_p('/music/no_audio')
         FileUtils.mkdir_p('/music/a/aa')
+        FileUtils.mkdir_p('/music/special characters')
         FileUtils.touch([
           '/music/a/aa/01 a.mp3',
           '/music/a/aa/aa.jpg',
           '/music/a/not_audio_in_artist_dir.ini',
-          '/music/no_audio/nope.db'
+          '/music/no_audio/nope.db',
+          '/music/special characters/01 first. song.mp3',
+          '/music/special characters/folder.jpg'
         ])
       end
 
@@ -56,7 +59,8 @@ module Audiofhile
         [
           '/music/a/aa/aa.jpg',
           '/music/a/not_audio_in_artist_dir.ini',
-          '/music/no_audio/nope.db'
+          '/music/no_audio/nope.db',
+          '/music/special characters/folder.jpg'
         ]
       end
     end
