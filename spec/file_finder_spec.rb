@@ -35,8 +35,6 @@ module Audiofhile
         FakeFS.deactivate!
       end
 
-      subject { FileFinder.new('/music') }
-
       def prepare_test_collection
         FileUtils.mkdir_p('/music/no_audio')
         FileUtils.mkdir_p('/music/a/aa')
@@ -48,15 +46,17 @@ module Audiofhile
         ])
       end
 
-      it "should provide a list of directories NOT containing any audio files" do
-        subject.directories_without_audio_files.should == ['/music/no_audio']
-      end
+      subject { FileFinder.new('/music') }
 
-      it "should provide a list of non-audio type files in the collection" do
-        subject.non_audio_files.should == [
+      its (:directories_without_audio_files) { should eq ['/music/no_audio'] }
+
+      its (:non_audio_files) { should eq expected_non_audio_files }
+
+      def expected_non_audio_files
+        [
           '/music/a/aa/aa.jpg',
           '/music/a/not_audio_in_artist_dir.ini',
-          '/music/no_audio/nope.db',
+          '/music/no_audio/nope.db'
         ]
       end
     end
