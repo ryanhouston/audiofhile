@@ -38,17 +38,11 @@ module Audiofhile
       def prepare_test_collection
         FileUtils.mkdir_p('/music/no_audio')
         FileUtils.mkdir_p('/music/a/aa')
-        FileUtils.mkdir_p('/music/special characters')
-        FileUtils.mkdir_p('/music/special characters[1]')
         FileUtils.touch([
           '/music/a/aa/01 a.mp3',
           '/music/a/aa/aa.jpg',
           '/music/a/not_audio_in_artist_dir.ini',
           '/music/no_audio/nope.db',
-          '/music/special characters/01 first. song.mp3',
-          '/music/special characters/folder.jpg',
-          '/music/special characters/folder[0].jpg',
-          '/music/special characters[1]/folder.jpg'
         ])
       end
 
@@ -58,14 +52,25 @@ module Audiofhile
 
       its (:non_audio_files) { should eq expected_non_audio_files }
 
+      it "should correctly evaluate directory names with special characters" do
+        special_char_non_audio_files = [
+          '/music/special characters/01 first. song.mp3',
+          '/music/special characters/folder.jpg',
+          '/music/special characters/folder[0].jpg',
+          '/music/special characters[1]/folder.jpg'
+        ]
+        FileUtils.mkdir_p('/music/special characters')
+        FileUtils.mkdir_p('/music/special characters[1]')
+        FileUtils.touch(special_char_non_audio_files)
+
+        subject.non_audio_files.should eq (expected_non_audio_files << special_char_non_audio_files)
+      end
+
       def expected_non_audio_files
         [
           '/music/a/aa/aa.jpg',
           '/music/a/not_audio_in_artist_dir.ini',
           '/music/no_audio/nope.db',
-          '/music/special characters/folder.jpg',
-          '/music/special characters/folder[0].jpg',
-          '/music/special characters[1]/folder.jpg'
         ]
       end
     end
