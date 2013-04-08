@@ -1,2 +1,5 @@
 .audiofhile
 .sw*
+.bundle
+bin/
+
