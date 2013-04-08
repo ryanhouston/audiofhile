@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Audiofhile
   class Configuration
     CONFIG_FILE = File.join(Dir.home, '.audiofhile').freeze
@@ -28,7 +30,7 @@ module Audiofhile
 
     def write
       yield(self)
-      File.open(CONFIG_FILE, 'w+') {|f| f.write(options.to_yaml) }
+      File.open(CONFIG_FILE, 'w+') {|f| f.write(YAML::dump(options)) }
     end
 
     def options
